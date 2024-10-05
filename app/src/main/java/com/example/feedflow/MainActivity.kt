@@ -83,7 +83,7 @@ This represents the type of data that is passed to the background task when you 
                 val arrayAdapter = ArrayAdapter<FeedEntry>(propContext, R.layout.list_item, parseApplications.applications)
                 propListView.adapter = arrayAdapter
             }
-
+//
             //handles the task of downloading data from the URL.
             override fun doInBackground(vararg url: String?): String {
                 Log.d(TAG, "doInBackground: Starts with ${url[0]}")

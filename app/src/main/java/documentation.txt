@@ -1,0 +1,33 @@
+In the logcat the output is:
+    onCreate called
+    onCreate: done
+    doInBackground: Starts with URL goes here
+
+
+Explanation:
+Synchronous Execution in onCreate:
+
+    When onCreate is called, the method executes synchronously. This means that each line of code runs one after the other in the order they are written.
+    The log statement Log.d(TAG, "onCreate: done") is executed immediately after calling downloadData.execute("URL goes here").
+
+Asynchronous Execution in AsyncTask:
+
+    The execute method of AsyncTask initiates the background task but does not wait for it to complete. Instead, it returns immediately after starting the task.
+    At this point, control returns to the onCreate method, which continues executing. Hence, the next line (logging "onCreate: done") executes immediately.
+Background Task Execution:
+
+    After the execute method is called, the system schedules the doInBackground method to run in a background thread. However, this scheduling happens asynchronously. The doInBackground method does not start running until after onCreate has finished executing.
+    Therefore, while onCreate finishes and logs "onCreate: done", the doInBackground method is still being scheduled and is executed shortly after.
+
+Sequence of Events:
+    onCreate starts executing:
+    Logs "onCreate called".
+
+    Calls downloadData.execute("URL goes here"):
+    Starts the background task but does not wait for it to complete.
+
+    Logs "onCreate: done":
+    This line executes before doInBackground has a chance to run.
+
+    doInBackground executes:
+    The background task starts running in its own thread, logging "oInBackground: Starts with URL goes here".
