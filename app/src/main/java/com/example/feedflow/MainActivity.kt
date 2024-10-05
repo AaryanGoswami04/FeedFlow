@@ -38,6 +38,8 @@ class FeedEntry {
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
+    private lateinit var xmlListView: ListView
+    private lateinit var downloadData: DownloadData
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +47,12 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val xmlListView: ListView = findViewById(R.id.xmlListView)
+        xmlListView = findViewById(R.id.xmlListView)
+        downloadData = DownloadData(this, xmlListView)
+
 
         Log.d(TAG, "onCreate called")
-        val downloadData = DownloadData(this, xmlListView)
+
         downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topalbums/limit=10/xml")
         Log.d(TAG, "onCreate: done")
 
@@ -58,12 +62,19 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
-/* String (First Parameter) — Input Parameter Type
-This represents the type of data that is passed to the background task when you start the AsyncTask.*/
+
+    override fun onDestroy() {
+        super.onDestroy()
+        downloadData.cancel(true)
+    }
+
+
+    /* String (First Parameter) — Input Parameter Type
+    This represents the type of data that is passed to the background task when you start the AsyncTask.*/
     companion object {
         private class DownloadData(context: Context, listView: ListView) : AsyncTask<String, Void, String>() {
             private val TAG = "DownloadData"
-/**/
+            /**/
             var propContext: Context by Delegates.notNull()
             var propListView: ListView by Delegates.notNull()
 
@@ -83,7 +94,7 @@ This represents the type of data that is passed to the background task when you 
                 val arrayAdapter = ArrayAdapter<FeedEntry>(propContext, R.layout.list_item, parseApplications.applications)
                 propListView.adapter = arrayAdapter
             }
-//
+            //
             //handles the task of downloading data from the URL.
             override fun doInBackground(vararg url: String?): String {
                 Log.d(TAG, "doInBackground: Starts with ${url[0]}")

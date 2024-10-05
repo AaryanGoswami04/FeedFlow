@@ -5,19 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-<<<<<<< HEAD
+    tools:context=".MainActivity"
+    tools:ignore="ExtraText">
 
-=======
->>>>>>> 50a6092ee59c3b7eaf0c375e022e41d9057cf711
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00BCD4"
         android:elevation="4dp"
-<<<<<<< HEAD
-        android:text="Feed Flow"
+        android:title="Feed Flow"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +31,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.0" />
-=======
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
@@ -45,6 +41,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
->>>>>>> 50a6092ee59c3b7eaf0c375e022e41d9057cf711
 
 </androidx.constraintlayout.widget.ConstraintLayout>

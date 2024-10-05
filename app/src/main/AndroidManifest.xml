@@ -2,15 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-<<<<<<< HEAD
+    <!-- Permission to access the Internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Application Configuration -->
     <application
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
-=======
-    <application
-        android:allowBackup="true"
->>>>>>> 50a6092ee59c3b7eaf0c375e022e41d9057cf711
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -19,15 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FeedFlow"
         tools:targetApi="31">
+
+        <!-- Main Activity Declaration -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
+                <!-- Entry Point of the App -->
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
