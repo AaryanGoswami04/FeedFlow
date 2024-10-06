@@ -4,13 +4,11 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.loader.content.AsyncTaskLoader
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -38,7 +36,9 @@ class FeedEntry {
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
-    private lateinit var xmlListView: ListView
+   // xmlListView will be used to display the list of RSS feed entries fetched and parsed by the app.
+    //The ArrayAdapter takes the list of FeedEntry objects and populates the ListView (xmlListView) with views for each item based on the R.layout.list_item layout.
+    private lateinit var xmlListView: ListView //xmlListView is declared as a ListView using  lateinit , indicating that it will be initialized later.
     private lateinit var downloadData: DownloadData
 
 
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        xmlListView = findViewById(R.id.xmlListView)
+        xmlListView = findViewById(R.id.xmlListView) //ListView is linked to its corresponding XML layout element
         downloadData = DownloadData(this, xmlListView)
 
 
@@ -74,7 +74,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private class DownloadData(context: Context, listView: ListView) : AsyncTask<String, Void, String>() {
             private val TAG = "DownloadData"
-            /**/
+
+            // The context (usually the activity) where the adapter is being used. It’s passed from MainActivity to DownloadData via the constructor
             var propContext: Context by Delegates.notNull()
             var propListView: ListView by Delegates.notNull()
 
@@ -91,10 +92,18 @@ class MainActivity : AppCompatActivity() {
                     parseApplications.parse(result)
                 }
 
+              /* // The ArrayAdapter is parameterized with FeedEntry, indicating that it will handle a list of FeedEntry objects.
+                //R.layout.list_item: The layout resource that defines how each item in the list should appear
+                //parseApplications.applications: The list of FeedEntry objects that the adapter will manage and display in the ListView.
                 val arrayAdapter = ArrayAdapter<FeedEntry>(propContext, R.layout.list_item, parseApplications.applications)
-                propListView.adapter = arrayAdapter
+                propListView.adapter = arrayAdapter //Assigning the Adapter to the ListView */
+                parseApplications.applications.forEach { app ->
+                    Log.d(TAG, "FeedEntry Summary: ${app.summary}")
+                }
+
+                val feedAdapter = FeedAdapter(propContext, R.layout.list_record, parseApplications.applications)
+                propListView.adapter = feedAdapter
             }
-            //
             //handles the task of downloading data from the URL.
             override fun doInBackground(vararg url: String?): String {
                 Log.d(TAG, "doInBackground: Starts with ${url[0]}")
