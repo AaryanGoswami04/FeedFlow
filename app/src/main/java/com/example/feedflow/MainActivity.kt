@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
+import androidx.appcompat.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     //The ArrayAdapter takes the list of FeedEntry objects and populates the ListView (xmlListView) with views for each item based on the R.layout.list_item layout.
     private lateinit var xmlListView: ListView //xmlListView is declared as a ListView using  lateinit , indicating that it will be initialized later.
     private lateinit var downloadData: DownloadData
+    private lateinit var toolbar: Toolbar
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,13 +50,18 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.title = "Feed Flow"
+
         xmlListView = findViewById(R.id.xmlListView) //ListView is linked to its corresponding XML layout element
         downloadData = DownloadData(this, xmlListView)
 
 
         Log.d(TAG, "onCreate called")
 
-        downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topalbums/limit=10/xml")
+        downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topalbums/limit=25/xml")
         Log.d(TAG, "onCreate: done")
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

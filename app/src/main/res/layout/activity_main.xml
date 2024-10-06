@@ -14,8 +14,12 @@
         android:layout_height="wrap_content"
         android:background="#00BCD4"
         android:elevation="4dp"
-        android:title="Feed Flow"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:title="Feed Flow"
+        android:visibility="visible"
+        android:titleTextColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView

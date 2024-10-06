@@ -66,10 +66,10 @@ class ParseApplications {
                 //Nothing else to do
                 eventType = xpp.next()
             }
-            for(app in applications){
-                Log.d(TAG,"******************")
-                Log.d(TAG, app.toString())
-            }
+//            for(app in applications){
+//                Log.d(TAG,"******************")
+//                Log.d(TAG, app.toString())
+//            }
         }catch(e: Exception){
             e.printStackTrace()
             status = false
