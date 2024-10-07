@@ -2,8 +2,20 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.FeedFlow" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="popupMenuStyle">@style/CustomPopupMenu</item>
+        <item name="actionOverflowMenuStyle">@style/CustomPopupMenu</item>
     </style>
 
     <style name="Theme.FeedFlow" parent="Base.Theme.FeedFlow" />
+
+    <!-- Custom text appearance for menu items -->
+    <style name="CustomMenuTextAppearance" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/menu_text</item> <!-- Black text color -->
+    </style>
+
+    <!-- Custom style for popup menu background and text color -->
+    <style name="CustomPopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@color/menu_background</item> <!-- White background color -->
+        <item name="android:itemTextAppearance">@style/CustomMenuTextAppearance</item> <!-- Black text color -->
+    </style>
 </resources>

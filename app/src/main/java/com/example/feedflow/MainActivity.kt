@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
@@ -40,10 +42,8 @@ class MainActivity : AppCompatActivity() {
    // xmlListView will be used to display the list of RSS feed entries fetched and parsed by the app.
     //The ArrayAdapter takes the list of FeedEntry objects and populates the ListView (xmlListView) with views for each item based on the R.layout.list_item layout.
     private lateinit var xmlListView: ListView //xmlListView is declared as a ListView using  lateinit , indicating that it will be initialized later.
-    private lateinit var downloadData: DownloadData
+    private var downloadData: DownloadData? = null
     private lateinit var toolbar: Toolbar
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,13 +56,10 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Feed Flow"
 
         xmlListView = findViewById(R.id.xmlListView) //ListView is linked to its corresponding XML layout element
-        downloadData = DownloadData(this, xmlListView)
 
 
-        Log.d(TAG, "onCreate called")
 
-        downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topalbums/limit=25/xml")
-        Log.d(TAG, "onCreate: done")
+        downloadUrl("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topalbums/limit=25/xml")
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -70,10 +67,34 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
+    private fun downloadUrl(feedUrl: String){
+        Log.d(TAG, "downloadUrl starting AsyncTask")
+        downloadData = DownloadData(this, xmlListView)
+        downloadData!!.execute(feedUrl)
+        Log.d(TAG, "downloadUrl done")
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.feeds_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val feedUrl: String
+        when(item.itemId){
+            R.id.menuFree-> feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=25/xml"
+            R.id.menuPaid-> feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/toppaidapplications/limit=25/xml"
+            R.id.menuAlbums-> feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topalbums/limit=25/xml"
+            R.id.menuSongs-> feedUrl = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topsongs/limit=25/xml"
+            R.id.menuMovies-> feedUrl ="http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topMovies/xml"
+            else-> return super.onOptionsItemSelected(item)
+        }
+        downloadUrl(feedUrl)
+        return true
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-        downloadData.cancel(true)
+        downloadData?.cancel(true)
     }
 
 
@@ -105,9 +126,6 @@ class MainActivity : AppCompatActivity() {
                 //parseApplications.applications: The list of FeedEntry objects that the adapter will manage and display in the ListView.
                 val arrayAdapter = ArrayAdapter<FeedEntry>(propContext, R.layout.list_item, parseApplications.applications)
                 propListView.adapter = arrayAdapter //Assigning the Adapter to the ListView */
-                parseApplications.applications.forEach { app ->
-                    Log.d(TAG, "FeedEntry Summary: ${app.summary}")
-                }
 
                 val feedAdapter = FeedAdapter(propContext, R.layout.list_record, parseApplications.applications)
                 propListView.adapter = feedAdapter
