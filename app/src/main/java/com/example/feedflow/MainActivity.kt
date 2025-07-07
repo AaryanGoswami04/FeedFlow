@@ -26,7 +26,7 @@ class FeedEntry {
     var releaseDate: String = ""
     var summary: String = ""
     var imageURL: String = ""
-
+    //Test comment
     override fun toString(): String {
         return """ 
             name = $name
@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity() {
                         is MalformedURLException -> "downloadXML: Invalid URL ${e.message}" //If there's a problem with the URL format
                         is IOException -> "downloadXML: IO Exception reading data: ${e.message}"   //If there's an I/O issue (e.g., network error)
                         is SecurityException -> ":downloadURL: Security exception. Needs Permission ${e.message}"
-                        else -> "Unknown error: ${e.message}" //Any other generic exception is caught and logged
+                        else -> "Unknown error present: ${e.message}" //Any other generic exception is caught and logged
                     }
                 }
                 return "" //If control reaches here, there was a problem, so return empty string
